@@ -39,57 +39,29 @@ public class GetAllHierarchy : MonoBehaviour
 
     private static void DumpGameObject(GameObject gameObject, StreamWriter writer, string indent, string parentName)
     {
-        foreach (Component component in gameObject.GetComponents<Component>())
-        {
-            if (component == null)
-            {
-                Debug.Log("NULL");
-            }
-            else
-            {
-                if ((component.GetType().Name == "Text")||(component.GetType().Name == "Button"))
-                {
-                    if ((component.GetType().Name == "Text"))
-                    {
-                        if ((component.GetType().Name == "Text"))
-                        {
-                            Text text = gameObject.GetComponent<Text>();
-                            writer.WriteLine(text.text + " = " + parentName + gameObject.name);
-                        }                      
-                    }  
-                    else if((component.GetType().Name == "Button"))
-                    {
-                        writer.WriteLine(gameObject.name + " = " + parentName + gameObject.name);
-                    }
-                    else
-                    {
-                        writer.WriteLine(parentName + gameObject.name);
-                    }
-                }
-                else
-                {
-                    writer.WriteLine(parentName + gameObject.name);
-                }
-            }
-        }
         if (gameObject.transform.childCount > 0)
         {
-
             if (parentName != "")
             {
                 if (!parentName.EndsWith("/"))
                     parentName = parentName + "/";
             }
-
-
             parentName = parentName + gameObject.name;
         }
         else
         {
             parentName = parentName + gameObject.name;
-           
+
         }
 
+        if (parentName.EndsWith("/"))
+        {
+            writer.WriteLine(parentName + gameObject.name);
+        }
+        else
+        {
+            writer.WriteLine(parentName);
+        }
         foreach (Transform child in gameObject.transform)
         {
             if (!parentName.EndsWith("/"))
